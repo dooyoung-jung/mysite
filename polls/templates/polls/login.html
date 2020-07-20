@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action = '/polls/login_post/'>
+        {% csrf_token %}
+        <input type="submit" name = '로귄하쟈'> <br>
+        <input type="text" name ='user_id'>
+        <input type="password" name = 'user_pw'>
+    </form>
+    <script src = 'http://code.jquery.com/jquery-3.3.1.min.js'></script>
+    <script>
+        //$('[type=submit]').click(function(){})
+        $('[type = submit]').blur( () => {
+            $.ajax({
+                type : 'POST'
+                url : '/polls/login_post/',
+                data : $('form').serialize(), //직렬화  
+                // data: {
+                //     'user_id' : $('[name = user_id]').val(), //val은 form의 3가지 태그에만 가능
+                //     'user_pw' : $('[name = user_pw').val()
+                // },
+                success : function(res) {
+                    console.log(res)
+                },
+            }); //필수속성은 url과 success
+         return false;
+        })
+    </script>
+</body>
+</html>

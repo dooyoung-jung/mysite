@@ -1,0 +1,59 @@
+<h1>{{ question.question_text }}</h1>
+<!--action #action 정보를 어디로 보낼것인가, method ##get 과 post 방식!, enctype -->
+<form action = "{% url 'vote' question.id %}" method="post"> 
+    {% csrf_token %}
+    <!--input, select, textarea-->
+    <ul>
+        {% for choice in question.choice_set.all %}
+        <li>
+            <input type='radio' 
+            name="choice" 
+            id = '{{choice.id}}' 
+            value = '{{choice.id}}'
+            /> 
+            <label for ='{{choice.id}}'>{{ choice.choice_text }}</label>
+        </li>
+        {% endfor %}
+    </ul>
+    <input type = 'submit' value = '전송' id="send"/>
+    <input type = 'button' value = '초기화'/>
+</form>
+
+<form id="frm" action ="/polls/{{question.id}}/reset/">
+    <input type = 'submit' value = '초기화'/>
+</form>
+<script src = "http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+
+    $('#send').click(() => {
+        $.ajax({
+         type : 'POST',
+         url : "{% url 'vote' question.id %}",
+         data : $('form:eq(0)').serialize(), //직렬화  
+         success : function(res) {
+             console.log(res)
+            },
+        }); //필수속성은 url과 success
+     return false;
+    });
+
+
+    $('[type=button]').click(()=>{
+
+    });
+    //표현식 css
+    document
+    .querySelector('[type=button]')
+    .addEventListener('click',function(){
+        //1. GET 방식으로 직접 주소 입력
+        //location = '/polls/{{question.id}}/reset/';
+
+        //
+        const frm = document.querySelector('#frm')
+        frm.submit()
+
+    })
+
+</script>
+
